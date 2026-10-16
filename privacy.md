@@ -24,4 +24,4 @@ Changes. If this policy changes, the updated version will be posted on this page
 
 Support
 
-Questions, bugs, or feedback: nevermind.support@icloud.com
+Questions, bugs, or feedback: support@getnevermind.app
