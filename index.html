@@ -1,141 +1,76 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Nevermind — One task at a time</title>
-  <meta name="description" content="Nevermind is a free iOS app that shows you one task at a time, so you stop staring at the list and start doing.">
-  <meta property="og:title" content="Nevermind — One task at a time">
-  <meta property="og:description" content="A free iOS app that shows you one task at a time. No guilt, no streak resets.">
-  <meta property="og:url" content="https://getnevermind.app">
-  <meta name="theme-color" content="#0f0f10">
-  <style>
-    :root {
-      --bg: #fafaf9;
-      --fg: #18181b;
-      --muted: #6b6b73;
-      --card: #ffffff;
-      --border: #e7e5e4;
-      --accent: #18181b;
-      --accent-fg: #ffffff;
-    }
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --bg: #0f0f10;
-        --fg: #f4f4f5;
-        --muted: #a1a1aa;
-        --card: #18181b;
-        --border: #27272a;
-        --accent: #f4f4f5;
-        --accent-fg: #0f0f10;
-      }
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      background: var(--bg);
-      color: var(--fg);
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
-      line-height: 1.6;
-      -webkit-font-smoothing: antialiased;
-    }
-    .wrap { max-width: 640px; margin: 0 auto; padding: 0 20px; }
-    header { padding: 72px 0 48px; text-align: center; }
-    .icon {
-      width: 88px; height: 88px; border-radius: 22px;
-      background: var(--accent); color: var(--accent-fg);
-      display: inline-flex; align-items: center; justify-content: center;
-      font-size: 40px; font-weight: 700; margin-bottom: 24px;
-    }
-    h1 { font-size: 44px; letter-spacing: -0.03em; line-height: 1.1; }
-    .tagline { font-size: 20px; color: var(--muted); margin-top: 12px; }
-    .cta {
-      display: inline-block; margin-top: 32px; padding: 14px 28px;
-      background: var(--accent); color: var(--accent-fg);
-      border-radius: 999px; text-decoration: none; font-weight: 600;
-    }
-    .cta-note { display: block; margin-top: 10px; font-size: 14px; color: var(--muted); }
-    section { padding: 32px 0; border-top: 1px solid var(--border); }
-    h2 { font-size: 22px; letter-spacing: -0.01em; margin-bottom: 16px; }
-    .features { display: grid; gap: 12px; }
-    .feature {
-      background: var(--card); border: 1px solid var(--border);
-      border-radius: 14px; padding: 16px 18px;
-    }
-    .feature strong { display: block; margin-bottom: 2px; }
-    .feature span { color: var(--muted); font-size: 15px; }
-    .faq dt { font-weight: 600; margin-top: 16px; }
-    .faq dt:first-child { margin-top: 0; }
-    .faq dd { color: var(--muted); }
-    a { color: inherit; }
-    .contact a { font-weight: 600; }
-    footer {
-      padding: 32px 0 48px; border-top: 1px solid var(--border);
-      font-size: 14px; color: var(--muted);
-      display: flex; gap: 20px; flex-wrap: wrap; justify-content: center;
-    }
-    footer a { color: var(--muted); }
-    @media (max-width: 480px) {
-      header { padding: 48px 0 32px; }
-      h1 { font-size: 36px; }
-      .tagline { font-size: 18px; }
-    }
-  </style>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Nevermind — One thing at a time.</title>
+<meta name="description" content="A head full of things. One place to start. Nevermind is a free iPhone app that helps you focus on one task at a time.">
+<meta name="theme-color" content="#fafafa">
+<meta property="og:title" content="Nevermind — One thing at a time."><meta property="og:description" content="Less in your head. More in your day. Coming soon, free for iPhone."><meta property="og:image" content="https://getnevermind.app/app-icon.png">
+<link rel="icon" href="app-icon.png"><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="stylesheet" href="style.css?v=slower-motion-1">
 </head>
-<body>
-  <div class="wrap">
-    <header>
-      <div class="icon" aria-hidden="true">1</div>
-      <h1>Nevermind</h1>
-      <p class="tagline">One task at a time. Stop staring at the list and start doing.</p>
-      <!-- Replace href with your App Store link once live -->
-      <a class="cta" href="#">Coming soon to the App Store</a>
-      <span class="cta-note">Free · iPhone</span>
-    </header>
+<body id="top">
+<a class="skip" href="#main">Skip to content</a>
+<svg class="svg-library" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><symbol id="arrow" viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></symbol><symbol id="check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol><symbol id="pause" viewBox="0 0 24 24"><path d="M9 5v14M15 5v14"/></symbol><symbol id="star" viewBox="0 0 24 24"><path d="M12 2c0 6-4 10-10 10 6 0 10 4 10 10 0-6 4-10 10-10-6 0-10-4-10-10Z"/></symbol></svg>
+<header class="header"><div class="nav-wrap"><a class="brand" href="#top"><img src="app-icon.png" alt="" width="32" height="32">nevermind</a><nav aria-label="Main navigation"><a href="#how">How it works</a><a href="#faq">Questions</a><a class="nav-cta" href="#get-app">For iPhone <svg aria-hidden="true"><use href="#arrow"/></svg></a></nav></div></header>
+<main id="main">
+<section class="scroll-story" id="how" aria-label="The Nevermind scroll story">
+<div class="hero grid-paper story-sticky" aria-labelledby="hero-title">
+<div class="hero-inner">
+<div class="hero-kicker"><span><i></i> A little room for your mind.</span><span class="hero-edition">Free for iPhone · Coming soon</span></div>
+<h1 id="hero-title">ONE THING AT A TIME.</h1>
+<div class="hero-story"><p class="hero-line">37 tabs open.<br> <span>And that's just your brain.</span></p><p class="hero-description">Get everything out of your head.<br> Nevermind gives you one thing to do next.<br> You take it from there.</p><button class="button story-start" type="button">See it in motion <span>↘</span></button><p class="hero-note">Free to use. No account needed.</p></div>
+<div class="mascot-stage" id="mascot-stage" role="img" aria-label="Nevermind's warm cream, soft, star-shaped sidekick floating above a task"><img class="mascot-fallback" src="assets/mascot-fallback.png" alt="" width="102" height="102"></div>
+<div class="floating-task" id="demo-card"><div class="task-label"><span class="priority-dot"></span> Your next thing <span class="demo-label">Demo</span></div><p id="demo-task" aria-live="polite">Pay the bill before they<br> cut the internet.</p><button class="complete-button" id="complete-task"><svg aria-hidden="true"><use href="#check"/></svg><span>Complete</span><span class="key-hint">↵</span></button></div>
+<div class="side-note" aria-hidden="true">a little company<br> for the next thing <svg viewBox="0 0 72 53"><path d="M5 4Q65-5 58 44m-9-8 9 10 8-13"/></svg></div>
 
-    <section>
-      <h2>How it works</h2>
-      <div class="features">
-        <div class="feature">
-          <strong>Just the next task</strong>
-          <span>Add everything you need to do. Nevermind shows you only one thing, in order of what matters.</span>
-        </div>
-        <div class="feature">
-          <strong>No guilt, no resets</strong>
-          <span>No broken streaks, no punishment. Set a task aside and come back to it later.</span>
-        </div>
-        <div class="feature">
-          <strong>Hard to avoid</strong>
-          <span>Snooze a task three times and it moves to the top. No more quietly dodging the same thing.</span>
-        </div>
-        <div class="feature">
-          <strong>Always in view</strong>
-          <span>Your current task on the Lock Screen and in the Dynamic Island, so you don't forget to open the app.</span>
-        </div>
-      </div>
-    </section>
+<div class="story-copy" data-chapter="1" aria-hidden="true" inert>
+<p class="eyebrow">01 · Let it all out</p><h2>ALL THE<br> THINGS.<br> <span>ONE PLACE.</span></h2>
+<p class="chapter-description">The errand. The email. That one thing.<br> Type it or say it. Let your head breathe.</p>
+<div class="priority-tags"><span>Must Do First</span><span>Should Do</span><span>Someday</span></div>
+</div>
 
-    <section id="support">
-      <h2>Support</h2>
-      <p class="contact">Questions, bugs, or ideas? Email <a href="mailto:support@getnevermind.app">support@getnevermind.app</a>. I usually reply within 1–2 days.</p>
-    </section>
+<figure class="story-screen screen-dump" data-screen="1" aria-hidden="true">
+<div class="screen-caption"><span>Your brain dump</span><span>↓</span></div>
+<div class="story-crop dump-crop"><img src="screens/02-dump.jpg" width="1206" height="2622" alt="Nevermind's task list, organized into Must Do First, Should Do, and Someday."></div>
+<figcaption>Everything has a place. It doesn't all need your attention.</figcaption>
+</figure>
+<div class="story-copy" data-chapter="2" aria-hidden="true" inert>
+<p class="eyebrow">02 · Find your focus</p><h2>JUST THIS.<br> <span>RIGHT NOW.</span></h2>
+<p class="chapter-description">Your list can wait. Nevermind shows you<br> one task, so you can actually get started.</p>
+<p class="chapter-footnote">Do it now, or come back when you’re ready.</p>
+</div>
 
-    <section>
-      <h2>FAQ</h2>
-      <dl class="faq">
-        <dt>Is Nevermind free?</dt>
-        <dd>Yes, completely free.</dd>
-        <dt>Where is my data stored?</dt>
-        <dd>On your device. See the <a href="/privacy">Privacy Policy</a> for details.</dd>
-        <dt>Can I back up my tasks?</dt>
-        <dd>Yes. You can export and import everything (tasks, history and settings) from the app.</dd>
-      </dl>
-    </section>
+<figure class="story-screen screen-focus" data-screen="2" aria-hidden="true">
+<div class="screen-caption"><span>One thing at a time</span><span>↑</span></div>
+<div class="story-crop focus-crop"><img src="screens/01-one-task.jpg" width="1206" height="2622" alt="The Nevermind sidekick above a single task: Pay the bill before they cut the internet."></div>
+<figcaption>Actual app. Just the part that matters.</figcaption>
+</figure>
+<div class="story-copy" data-chapter="3" aria-hidden="true" inert>
+<p class="eyebrow">03 · See your progress</p><h2>ONE DOWN.<br> <span>LOOK AT YOU.</span></h2>
+<p class="chapter-description">Every finished task adds up.<br> Take a day off. Your progress stays.</p>
+<p class="chapter-footnote">Come back whenever you’re ready.</p>
+</div>
 
-    <footer>
-      <a href="/privacy">Privacy Policy</a>
-      <a href="mailto:support@getnevermind.app">Contact</a>
-      <span>© 2026 Nevermind</span>
-    </footer>
-  </div>
-</body>
-</html>
+<figure class="story-screen screen-momentum" data-screen="3" aria-hidden="true">
+<div class="screen-caption"><span>A little momentum</span><span>↓</span></div>
+<div class="story-crop momentum-crop"><img src="screens/05-momentum.jpg" width="1206" height="2622" alt="Nevermind's Momentum screen with completed tasks and a week of progress."></div>
+<figcaption>Good days. Off days. Still moving forward.</figcaption>
+</figure>
+<nav class="story-chapters" aria-label="Scroll story chapters">
+<div class="story-track" aria-hidden="true"><span></span></div>
+<button type="button" data-step="0" aria-label="Start here" aria-current="step"><span>00</span><span>Start here</span></button>
+<button type="button" data-step="1" aria-label="Let it out"><span>01</span><span>Let it out</span></button>
+<button type="button" data-step="2" aria-label="Find your one"><span>02</span><span>Find your one</span></button>
+<button type="button" data-step="3" aria-label="Feel the progress"><span>03</span><span>Feel the progress</span></button>
+</nav>
+<div class="hero-bottom"><span class="scroll-hint"><span>↕</span> Scroll to explore</span><button id="motion-toggle" class="motion-toggle" aria-pressed="false"><svg aria-hidden="true"><use href="#pause"/></svg><span>Pause motion</span></button></div>
+</div>
+</div>
+</section>
+<section class="faq-section section-wrap" id="faq" aria-labelledby="faq-title"><div><p class="eyebrow">A few things to know</p><h2 id="faq-title">GOOD<br> QUESTIONS.</h2><p class="contact-copy">Something else on your mind?<br> <a href="mailto:support@getnevermind.app">Say hello ↗</a></p></div><div class="faq"><details><summary>Is Nevermind free?</summary><p>Yes, completely free.</p></details><details><summary>Where is my data stored?</summary><p>On your device. You don't need an account. See the <a href="https://getnevermind.app/privacy">Privacy Policy</a> for details.</p></details><details><summary>Can I back up my tasks?</summary><p>Yes. You can export and import your tasks, history, and settings from the app.</p></details></div></section>
+<section class="closing grid-paper" id="get-app" aria-labelledby="closing-title"><p class="eyebrow">A little less thinking. A little more doing.</p><h2 id="closing-title">YOU'VE<br> <span>GOT THIS.</span></h2><p>One thing at a time.</p><div class="store-status"><span>Coming soon to the</span><strong>App Store</strong></div><p class="closing-note">Free for iPhone. Your sidekick is waiting.</p></section>
+</main>
+<footer class="footer section-wrap"><a class="brand" href="#top">nevermind</a><span>© 2026 Nevermind</span><div><a href="https://getnevermind.app/privacy">Privacy</a><a href="mailto:support@getnevermind.app">Get in touch ↗</a></div></footer>
+<script src="site.js?v=slower-motion-1" defer></script>
+<script src="assets/mascot.bundle.js?v=slower-motion-1" defer></script>
+</body></html>
