@@ -1,3 +1,10 @@
+---
+title: Privacy Policy
+permalink: /privacy/
+---
+
+# Privacy Policy
+
 Nevermind — Privacy Policy & Support
 
 Last updated: October 15, 2026
