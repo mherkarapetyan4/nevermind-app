@@ -60,6 +60,9 @@
   const buttons = [...document.querySelectorAll('[data-step]')];
   const track = document.querySelector('.story-track > span');
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+  // Keep the readable text scale on short phones by using the stacked layout.
+  const shortScreen = matchMedia('(max-width: 760px) and (max-height: 720px)');
+  const usesStackedLayout = () => reduced.matches || shortScreen.matches;
   const centers = [0, .32, .61, .90];
   const clamp = x => Math.max(0, Math.min(1, x));
   const ease = x => { x = clamp(x); return x*x*(3-2*x); };
@@ -88,7 +91,7 @@
   }
   function render(now) {
     frame = 0;
-    if (reduced.matches) return;
+    if (usesStackedLayout()) return;
     const {h, w, innerWidth, top, range, screenWidths, stageWidth, stageHeight, taskTop} = metrics;
     const mobile = w <= 760;
     const compact = w <= 1024;
@@ -187,17 +190,17 @@
   }
   function schedule() { if (!frame) frame=requestAnimationFrame(render); }
   function go(chapter) {
-    if (reduced.matches) { copies[Math.max(0,chapter-1)].scrollIntoView({behavior:'instant',block:'start'}); return; }
+    if (usesStackedLayout()) { copies[Math.max(0,chapter-1)].scrollIntoView({behavior:'instant',block:'start'}); return; }
     scrollTo({top:metrics.top+centers[chapter]*metrics.range,behavior:'smooth'});
   }
   buttons.forEach(button => button.addEventListener('click', () => go(Number(button.dataset.step))));
   document.querySelector('.story-start').addEventListener('click', () => go(1));
   function mode() {
-    document.documentElement.classList.toggle('story-ready',!reduced.matches);
+    document.documentElement.classList.toggle('story-ready',!usesStackedLayout());
     cancelAnimationFrame(frame);
     frame=0;
     lastTime=0;
-    if (reduced.matches) {
+    if (usesStackedLayout()) {
       [...copies,...screens,intro,task].forEach(el=>expose(el,true));
       [title,intro,task,...copies,...screens].forEach(el=>{el.style.transform='';el.style.opacity='';el.style.visibility='';});
       stage.style.transform='';
@@ -211,5 +214,6 @@
   new ResizeObserver(measure).observe(viewport);
   document.fonts.ready.then(measure);
   reduced.addEventListener('change',mode);
+  shortScreen.addEventListener('change',mode);
   mode();
 })();
