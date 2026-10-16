@@ -13,7 +13,7 @@ Optional local HTTP preview: `python3 -m http.server 4173`.
 
 - `index.html`: content and accessible HTML.
 - `style.css`: layout, responsive styles and reveal transitions.
-- `site.js`: native-scroll timeline, four chapter stops, task demo and floating-motion toggle.
+- `site.js`: native-scroll timeline, four chapters, and task demo.
 - `mascot.js`: floating 3D mascot, pointer response and completion reaction.
 - `assets/mascot.bundle.js`: ready-to-use classic script with Three.js and mesh included, compatible with direct file opening and hosting.
 - `build-portable.py`: optional Python 3 build script; regenerates the bundle and standalone HTML after source changes.
@@ -21,9 +21,9 @@ Optional local HTTP preview: `python3 -m http.server 4173`.
 - `bake-mascot.mjs`: optional mesh source; regenerate with Node.js.
 - `screens/02-dump.jpg`, `01-one-task.jpg`, `05-momentum.jpg`: three topic-only crops, shown sequentially inside the pinned viewport. Status bars and navigation remain outside the crops.
 
-The story pins below the navigation for roughly five screenfuls of native scrolling. Screens enter from alternating directions, reverse when scrolling back, then release naturally into the FAQ. Chapter buttons offer direct navigation.
+The story pins below the navigation for roughly five screenfuls of native scrolling. Screens enter from alternating directions, reverse when scrolling back, then release naturally into the FAQ.
 
-Reduced-motion preferences switch to a readable, unpinned sequence. The floating mascot can be paused independently.
+Reduced-motion preferences switch to a readable, unpinned sequence. The floating mascot also respects reduced-motion preferences.
 An image fallback remains available if WebGL or asset loading fails.
 The example task interaction is a demo and stores no data.
 

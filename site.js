@@ -1,14 +1,10 @@
 (() => {
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
-  const toggle = document.querySelector('#motion-toggle');
   let paused = reduced.matches;
   const updateMotion = () => {
     document.documentElement.classList.toggle('motion-paused', paused);
-    toggle.setAttribute('aria-pressed', String(paused));
-    toggle.querySelector('span').textContent = paused ? 'Play floating' : 'Pause floating';
     window.dispatchEvent(new CustomEvent('nevermind-motion', { detail: { paused } }));
   };
-  toggle.addEventListener('click', () => { paused = !paused; updateMotion(); });
   reduced.addEventListener('change', e => { paused = e.matches; updateMotion(); });
   updateMotion();
   if ('IntersectionObserver' in window && !reduced.matches) {
@@ -57,8 +53,6 @@
   const sideNote = document.querySelector('.side-note');
   const copies = [...document.querySelectorAll('[data-chapter]')];
   const screens = [...document.querySelectorAll('[data-screen]')];
-  const buttons = [...document.querySelectorAll('[data-step]')];
-  const track = document.querySelector('.story-track > span');
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   // Keep the readable text scale on short phones by using the stacked layout.
   const shortScreen = matchMedia('(max-width: 760px) and (max-height: 720px)');
@@ -103,7 +97,6 @@
     lastTime = now;
     progress += (target-progress)*(1-Math.exp(-dt/160));
     if (Math.abs(target-progress)<.00001) progress=target;
-    track.style.transform = `${compact?'scaleX':'scaleY'}(${progress})`;
     story.dataset.progress = progress.toFixed(4);
     const leave = ease(progress/.20);
     title.style.transform = `translate3d(0,${-leave*h*.85}px,0)`;
@@ -183,7 +176,6 @@
     if (chapter!==currentChapter) {
       currentChapter=chapter;
       story.dataset.chapter=chapter;
-      buttons.forEach((button,i) => i===chapter ? button.setAttribute('aria-current','step') : button.removeAttribute('aria-current'));
     }
     window.dispatchEvent(new CustomEvent('nevermind-scroll',{detail:{progress,flip:shrink,cross}}));
     if (progress!==target) schedule();
@@ -193,7 +185,6 @@
     if (usesStackedLayout()) { copies[Math.max(0,chapter-1)].scrollIntoView({behavior:'instant',block:'start'}); return; }
     scrollTo({top:metrics.top+centers[chapter]*metrics.range,behavior:'smooth'});
   }
-  buttons.forEach(button => button.addEventListener('click', () => go(Number(button.dataset.step))));
   document.querySelector('.story-start').addEventListener('click', () => go(1));
   function mode() {
     document.documentElement.classList.toggle('story-ready',!usesStackedLayout());
