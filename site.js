@@ -55,9 +55,16 @@
   const screens = [...document.querySelectorAll('[data-screen]')];
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   // Keep the readable text scale on short phones by using the stacked layout.
-  const shortScreen = matchMedia('(max-width: 760px) and (max-height: 720px)');
+  // Landscape phones are too short for a pinned scene at any width.
+  const shortScreen = matchMedia('(max-width: 760px) and (max-height: 720px), (max-height: 520px)');
   const usesStackedLayout = () => reduced.matches || shortScreen.matches;
+  // Landscape tablets have the room for the desktop scene; must match style.css.
+  const compactScreen = matchMedia('(max-width: 760px), (max-width: 1180px) and (orientation: portrait)');
   const centers = [0, .32, .61, .90];
+  // Compact [enter, exit] progress per chapter; the mascot swaps sides in the gap before chapter 3.
+  const compactWindows = [[.17, .40], [.46, .66], [.75, 2]];
+  // Tallest crop per screen (height / width), before app chrome below the content shows.
+  const cropLimits = [1.4, .95, 1.4];
   const clamp = x => Math.max(0, Math.min(1, x));
   const ease = x => { x = clamp(x); return x*x*(3-2*x); };
   let frame = 0, lastTime = 0, progress = 0;
@@ -71,25 +78,43 @@
     element.inert = !visible;
   }
   // Read layout only when it changes, before any animation writes.
+  // On compact screens each card sits right under its copy and takes the height
+  // that remains, leaving room for the mascot perched on its bottom corner.
+  function layoutCards(compact, h) {
+    screens.forEach((screen, i) => {
+      const crop = screen.querySelector('.story-crop');
+      screen.style.top = '';
+      crop.style.height = '';
+      if (!compact) return;
+      const copy = copies[i];
+      const top = copy.offsetTop + copy.offsetHeight + (h > 900 ? 36 : 18);
+      const chrome = screen.offsetHeight - crop.offsetHeight;
+      screen.style.top = `${top}px`;
+      // Fill the remaining height, up to a crop that still reads as the app's top section.
+      crop.style.height = `${Math.max(110, Math.min(crop.offsetWidth*cropLimits[i], h - top - chrome - stage.offsetHeight*.42))}px`;
+    });
+  }
   function measure() {
     const h = viewport.clientHeight;
+    layoutCards(!usesStackedLayout() && compactScreen.matches, h);
     metrics = {
       h, w: viewport.clientWidth, innerWidth: inner.clientWidth,
       top: story.getBoundingClientRect().top + scrollY - header.offsetHeight,
       range: Math.max(1, story.offsetHeight-h),
       screenWidths: screens.map(screen => screen.offsetWidth),
+      cardBottoms: screens.map(screen => screen.offsetTop + screen.offsetHeight),
       stageWidth: stage.offsetWidth, stageHeight: stage.offsetHeight,
-      taskTop: task.offsetTop
+      taskTop: task.offsetTop,
+      introBottom: intro.offsetTop + intro.offsetHeight
     };
     schedule();
   }
   function render(now) {
     frame = 0;
     if (usesStackedLayout()) return;
-    const {h, w, innerWidth, top, range, screenWidths, stageWidth, stageHeight, taskTop} = metrics;
+    const {h, w, innerWidth, top, range, screenWidths, cardBottoms, stageWidth, stageHeight, taskTop, introBottom} = metrics;
     const mobile = w <= 760;
-    const compact = w <= 1024;
-    const shortTablet = !mobile && compact && h < 770;
+    const compact = compactScreen.matches;
     const target = clamp((scrollY-top)/range);
     // Time-based easing absorbs wheel steps equally at 60 Hz and 120 Hz.
     // The page itself still scrolls natively; only the pinned artwork follows softly.
@@ -104,7 +129,12 @@
     intro.style.transform = `translate3d(0,${-leave*h*.6}px,0)`;
     intro.style.opacity = 1-leave;
     expose(intro, progress < .14);
-    task.style.transform = `translate3d(${compact?'-50%':`${leave*w*.14}px`},${leave*h*.9}px,0) rotate(${compact?0:-5+leave*22}deg)`;
+    // On compact screens the opening mascot grows into the space between the intro and the task card.
+    // Any room left at full size lifts the mascot and card together, splitting the gap.
+    const heroRoom = taskTop-introBottom-28-stageHeight*.24;
+    const openingScale = compact ? Math.max(1.16, Math.min(2, innerWidth*.8/stageWidth, heroRoom/(stageHeight*.33))) : 1;
+    const heroLift = compact ? Math.max(0, heroRoom-openingScale*stageHeight*.33)/2 : 0;
+    task.style.transform = `translate3d(${compact?'-50%':`${leave*w*.14}px`},${leave*h*.9-heroLift}px,0) rotate(${compact?0:-5+leave*22}deg)`;
     task.style.opacity = 1-leave;
     expose(task, progress < .14);
     sideNote.style.opacity = 1-leave;
@@ -112,24 +142,28 @@
     const shrink = ease((progress-.32)/.29);
     const cross = ease((progress-.61)/.29);
     const dock = ease(progress/.24);
-    const scale = compact ? (1+(shortTablet?.10:mobile?.32:.60)*(1-dock))*(1-shrink*.12) : 1 - travel*.42 - shrink*.20;
+    const scale = compact ? 1+(openingScale-1)*(1-dock) : 1 - travel*.36 - shrink*.06;
     const leftPosition = -travel*w*(mobile?.29:.29);
     const rightPosition = w*(mobile?.19:.045);
     const stageX = leftPosition*(1-cross)+rightPosition*cross;
-    const stageY = travel*h*(mobile?.19:.23) - Math.sin(cross*Math.PI)*h*.13;
-    // Center the opening pair, dock beside the cards, then change sides while
-    // the outgoing card has left and the incoming card is still below the stage.
-    const compactCross = ease((progress-.67)/.20);
-    const inset = mobile ? -6 : innerWidth*.04;
-    const rightDock = innerWidth-inset-stageWidth/2;
-    const leftDock = inset+stageWidth/2;
-    const openingX = innerWidth*(shortTablet?.75:.5);
+    const stageY = travel*h*(mobile?.19:.23) - Math.sin(cross*Math.PI)*h*.13 + cross*h*.06;
+    // Center the opening pair, then perch on the bottom corner of each card,
+    // changing sides while the outgoing card has left and the next is still below.
+    const compactCross = ease((progress-.69)/.09);
+    // Dock on the cards' outer corners: chapters 1–2 sit left, chapter 3 is pushed right.
+    const rightDock = Math.min(innerWidth-stageWidth*.3, screenWidths[0]+stageWidth*.2);
+    const leftDock = Math.max(stageWidth*.3, innerWidth-screenWidths[2]-stageWidth*.2);
+    const openingX = innerWidth*.5;
     const compactX = openingX+(rightDock-openingX)*dock+(leftDock-rightDock)*compactCross;
-    const openingY = shortTablet ? h*.64-stageHeight/2 : taskTop-stageHeight+(mobile?42:12);
-    const compactY = openingY+(h*.63-stageHeight/2-openingY)*dock;
+    const openingY = taskTop-stageHeight*.74-heroLift;
+    const [bottom1, bottom2, bottom3] = cardBottoms;
+    const cardBottom = bottom1+(bottom2-bottom1)*ease((progress-.40)/.10)+(bottom3-bottom2)*ease((progress-.66)/.12);
+    const compactY = openingY+(cardBottom-stageHeight*.55-openingY)*dock;
     stage.style.transform = compact
       ? `translate3d(${compactX-stageWidth/2}px,${compactY}px,0) scale(${scale})`
       : `translate3d(${stageX}px,${stageY}px,0) scale(${scale})`;
+    // Behind the opening task card, in front of the story cards it sits on.
+    stage.style.zIndex = compact && dock>.5 ? 7 : '';
     stage.dataset.flip = shrink.toFixed(3);
     stage.dataset.cross = cross.toFixed(3);
     stage.dataset.scale = scale.toFixed(3);
@@ -147,26 +181,26 @@
       let alpha = 1-ease((Math.abs(delta)-.10)/.085);
       const direction = chapter===2 ? 1 : -1;
       let y = Math.sign(delta)*distance*h*1.05*direction;
-      if (compact && chapter===1 && progress<.32) alpha *= ease((progress-.24)/.08);
-      if (compact && chapter===2 && progress>.61) {
-        const exit = ease((progress-.61)/.08);
-        alpha=1-exit;
-        y=exit*h;
-      }
-      if (compact && chapter===3) {
-        const enter = ease((progress-.78)/.12);
-        alpha=enter;
-        y=(1-enter)*h;
+      let copyY = -Math.sign(delta)*distance*h*.16;
+      // Small screens play chapters back to back: one fully leaves before the
+      // next arrives, so headlines never overlap and no frame is left empty.
+      if (compact) {
+        const [start, end] = compactWindows[i];
+        const enter = ease((progress-start)/.06);
+        const exit = ease((progress-end)/.05);
+        alpha = enter*(1-exit);
+        y = (1-enter)*h*.22 - exit*h*.12;
+        copyY = (1-enter)*24 - exit*24;
       }
       const screen = screens[i];
       // The final screen crosses left as its copy crosses right, in step with the mascot.
       const screenShift = chapter===3 ? (compact ? innerWidth-screenWidths[i] : (25-(innerWidth*.90-screenWidths[i]))*cross) : 0;
       const copyShift = chapter===3 && !compact ? (innerWidth*.54-25)*cross : 0;
-      const rotation = compact ? 0 : (chapter===2?3:-3)+Math.sign(delta)*Math.min(distance,2)*7;
+      const rotation = compact ? (chapter===2?1.5:-1.5)*(2-alpha) : (chapter===2?3:-3)+Math.sign(delta)*Math.min(distance,2)*7;
       screen.style.transform = `translate3d(${screenShift}px,${y}px,0) rotate(${rotation}deg)`;
       screen.style.opacity = alpha;
       screen.style.visibility = alpha>.001?'visible':'hidden';
-      copy.style.transform = `translate3d(${copyShift}px,${-Math.sign(delta)*distance*h*.16}px,0)`;
+      copy.style.transform = `translate3d(${copyShift}px,${copyY}px,0)`;
       copy.style.opacity = alpha;
       copy.style.visibility = alpha>.001?'visible':'hidden';
       expose(screen, alpha>.5);
@@ -195,6 +229,8 @@
       [...copies,...screens,intro,task].forEach(el=>expose(el,true));
       [title,intro,task,...copies,...screens].forEach(el=>{el.style.transform='';el.style.opacity='';el.style.visibility='';});
       stage.style.transform='';
+      stage.style.zIndex='';
+      layoutCards(false);
     } else {
       measure();
       progress=clamp((scrollY-metrics.top)/metrics.range);

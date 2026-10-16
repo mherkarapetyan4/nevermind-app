@@ -125,14 +125,14 @@ body{font-family:ui-rounded,"SF Pro Rounded",-apple-system,BlinkMacSystemFont,"H
 @media(max-width:370px){.story-sticky .floating-task{top:63%}}
 
 /* A separate companion lane keeps small-screen content unobstructed. */
-@media(max-width:1024px){
+@media(max-width:760px),(max-width:1180px) and (orientation:portrait){
  .story-sticky .mascot-stage{width:116px;height:160px;right:-6px;top:calc(63% - 80px);transform-origin:center}
  .story-screen{left:0;right:auto;width:calc(100% - 122px);max-width:420px;top:47%;padding:12px;border-radius:20px}
  .story-sticky .floating-task{left:0;right:auto;width:calc(100% - 122px);max-width:340px;transform-origin:left center}
  .story-copy{left:0;max-width:100%;width:100%}
  .story-crop{width:100%;aspect-ratio:1.05}
 }
-@media(min-width:761px) and (max-width:1024px){
+@media(min-width:761px) and (max-width:1180px) and (orientation:portrait){
  .story-sticky .mascot-stage{width:190px;height:230px;right:4%;top:calc(64% - 115px)}
  .story-sticky .hero-story{left:0;top:27%;max-width:75%}
  .story-sticky .floating-task{top:65%}
@@ -151,10 +151,10 @@ body{font-family:ui-rounded,"SF Pro Rounded",-apple-system,BlinkMacSystemFont,"H
  .story-screen,.story-sticky .floating-task{width:calc(100% - 100px);padding:10px}
  .story-screen figcaption{font-size:9px}
 }
-@media(min-width:761px) and (max-width:1024px){
+@media(min-width:761px) and (max-width:1180px) and (orientation:portrait){
  .story-copy[data-chapter="1"] h2>span{margin-left:.2em}
 }
-@media(min-width:761px) and (max-width:1024px) and (max-height:850px){
+@media(min-width:761px) and (max-width:1180px) and (orientation:portrait) and (max-height:850px){
  .story-copy{top:8%}
  .story-copy h2{font-size:38px}
  .story-copy .eyebrow{margin-bottom:12px}
@@ -165,11 +165,11 @@ body{font-family:ui-rounded,"SF Pro Rounded",-apple-system,BlinkMacSystemFont,"H
 }
 
 /* Center the opening pair; the scroll timeline places the mascot in side lanes. */
-@media(max-width:1024px){
+@media(max-width:760px),(max-width:1180px) and (orientation:portrait){
  .story-sticky .mascot-stage{left:0;right:auto;top:0}
  .story-sticky .floating-task{left:50%;right:auto;top:auto;bottom:100px;width:min(86%,340px);transform-origin:center}
 }
-@media(min-width:761px) and (max-width:1024px) and (max-height:850px){
+@media(min-width:761px) and (max-width:1180px) and (orientation:portrait) and (max-height:850px){
  .story-sticky .floating-task{left:36%;bottom:100px}
 }
 
@@ -200,7 +200,7 @@ body{font-family:ui-rounded,"SF Pro Rounded",-apple-system,BlinkMacSystemFont,"H
 }
 .story-sticky .complete-button{min-height:44px}
 .story-sticky h1{margin-top:0}
-@media(max-width:1024px){
+@media(max-width:760px),(max-width:1180px) and (orientation:portrait){
  .story-copy{top:4%}
 }
 @media(max-width:760px){
@@ -234,8 +234,58 @@ body{font-family:ui-rounded,"SF Pro Rounded",-apple-system,BlinkMacSystemFont,"H
   display:block;position:relative;left:auto;right:auto;top:auto;bottom:auto;
   margin:0 auto 36px;transform:none!important;
  }
+ /* Stacked chapters are not height-bound, so they can use full-size type and uncropped screens. */
+ html:not(.story-ready) .story-copy{margin:48px auto 20px}
+ html:not(.story-ready) .story-copy h2{font-size:clamp(38px,11vw,46px);letter-spacing:-1.8px}
+ html:not(.story-ready) .chapter-description{font-size:var(--type-body);max-width:34ch;margin-inline:auto}
+ html:not(.story-ready) .story-screen{width:100%;max-width:400px;padding:12px;margin:0 auto 12px}
+ html:not(.story-ready) .story-crop{max-height:none}
 }
 
 /* Keep the supplied App Store artwork at its original badge proportions. */
 .store-status{display:block;width:186px;max-width:100%;margin:27px auto 0;padding:0;background:none;border-radius:0}
 .store-status img{width:100%;height:auto}
+
+/* Larger supporting type at every size; rem keeps browser text preferences effective. */
+:root{--type-body:1.25rem;--type-support:1.0625rem;--type-caption:.9375rem}
+@media(min-width:761px){.story-sticky .hero-story{width:440px}}
+.closing>p:not(.eyebrow):not(.closing-note){font-size:var(--type-body)}
+@media(max-width:760px),(max-width:1180px) and (orientation:portrait){:root{--type-body:1.1875rem}}
+@media(max-width:760px){:root{--type-body:1.125rem;--type-support:1rem;--type-caption:.875rem}}
+
+/* Compact story: a full-size mascot perches on the corner of each card, as on desktop.
+   site.js places each card under its copy and fits the screenshot to the remaining height. */
+@media(max-width:760px),(max-width:1180px) and (orientation:portrait){
+ .story-sticky{--stage-w:clamp(220px,28vw,280px)}
+ .story-sticky .mascot-stage{width:var(--stage-w);height:calc(var(--stage-w)*1.12)}
+ .story-screen{width:calc(100% - 48px);max-width:600px;max-height:none}
+ .story-screen[data-screen="1"] figcaption,.story-screen[data-screen="2"] figcaption{padding-right:calc(var(--stage-w)*.48);text-align:left}
+ .story-screen[data-screen="3"] figcaption{padding-left:calc(var(--stage-w)*.48);text-align:right}
+ .story-copy h2{font-size:clamp(52px,7.4vw,72px)}
+ .chapter-description{max-width:560px}
+}
+@media(min-width:761px) and (max-width:1180px) and (orientation:portrait) and (max-height:850px){.story-copy h2{font-size:48px}}
+@media(max-width:760px){
+ .story-sticky{--stage-w:clamp(150px,42vw,180px)}
+ .story-screen{width:calc(100% - 28px)}
+ .story-copy h2{font-size:clamp(38px,11.4vw,52px);letter-spacing:-1.8px}
+ .chapter-description{max-width:36ch}
+ html:not(.story-ready) .story-sticky .mascot-stage{width:210px;height:235px}
+}
+/* The opening card sits nearer the bottom edge on taller phones; site.js grows the mascot to fill above it. */
+@media(max-width:760px){.story-sticky .floating-task{bottom:clamp(32px,6svh,96px)}}
+/* Portrait tablets: the intro centers under the title banner and the mascot fills the space below it. */
+@media(min-width:761px) and (max-width:1180px) and (orientation:portrait){
+ .story-sticky .hero-story{position:relative;top:auto;left:auto;width:100%;max-width:none;margin:44px 0 0;text-align:center}
+ .story-sticky .hero-description{max-width:40ch;margin-inline:auto}
+ .story-sticky .floating-task{bottom:clamp(40px,6svh,110px);width:min(70%,400px)}
+}
+/* Type and cards scale with the larger portrait tablets (iPad Air/Pro 11–13"). */
+@media(min-width:761px) and (max-width:1180px) and (orientation:portrait){
+ :root{--type-body:clamp(1.1875rem,2.2vw,1.5rem);--type-support:clamp(1.0625rem,1.8vw,1.25rem);--type-caption:clamp(.9375rem,1.5vw,1.0625rem)}
+ .story-sticky .hero-line{font-size:clamp(26px,3.4vw,36px)}
+ .story-copy h2{font-size:clamp(56px,7.6vw,84px)}
+ .chapter-description{max-width:36ch}
+ .story-screen{max-width:680px}
+}
+@media(max-width:760px),(max-width:1180px) and (orientation:portrait){html.story-ready .story-crop{max-height:none}}

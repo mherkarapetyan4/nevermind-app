@@ -54585,7 +54585,10 @@ window.addEventListener('nevermind-motion', event => { paused = event.detail.pau
 async function start() {
   const data = {"vertexCount": 24674, "indexCount": 148032, "eyes": [[-0.03500000000000003, 1.0875, 0.4698957674184837], [0.2274999999999998, 1.1469999999999996, 0.4697965912894547]]};
   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'low-power' });
-  renderer.setPixelRatio(Math.min(devicePixelRatio, 1.5));
+  // Sharp at the size the scroll scene shows it: base density times its current CSS scale.
+  const pixelRatioFor = () => Math.min(4, Math.ceil(Math.min(devicePixelRatio, 2) * Math.max(1, parseFloat(stage.dataset.scale) || 1) * 4) / 4);
+  let pixelRatio = pixelRatioFor();
+  renderer.setPixelRatio(pixelRatio);
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.1;
@@ -54656,6 +54659,7 @@ async function start() {
     const delta = Math.min((now - last) / 1000, .05);
     last = now;
     if (!visible || document.hidden) return;
+    if (pixelRatioFor() !== pixelRatio) { pixelRatio = pixelRatioFor(); renderer.setPixelRatio(pixelRatio); resize(); }
     if (!paused) elapsed += delta;
     const time = elapsed;
     const jump = Math.max(0, 1 - (time - celebration) / 1.1);
