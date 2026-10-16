@@ -80,15 +80,19 @@
       h, w: viewport.clientWidth, innerWidth: inner.clientWidth,
       top: story.getBoundingClientRect().top + scrollY - header.offsetHeight,
       range: Math.max(1, story.offsetHeight-h),
-      screenWidths: screens.map(screen => screen.offsetWidth)
+      screenWidths: screens.map(screen => screen.offsetWidth),
+      stageWidth: stage.offsetWidth, stageHeight: stage.offsetHeight,
+      taskTop: task.offsetTop
     };
     schedule();
   }
   function render(now) {
     frame = 0;
     if (reduced.matches) return;
-    const {h, w, innerWidth, top, range, screenWidths} = metrics;
+    const {h, w, innerWidth, top, range, screenWidths, stageWidth, stageHeight, taskTop} = metrics;
     const mobile = w <= 760;
+    const compact = w <= 1024;
+    const shortTablet = !mobile && compact && h < 770;
     const target = clamp((scrollY-top)/range);
     // Time-based easing absorbs wheel steps equally at 60 Hz and 120 Hz.
     // The page itself still scrolls natively; only the pinned artwork follows softly.
@@ -96,7 +100,7 @@
     lastTime = now;
     progress += (target-progress)*(1-Math.exp(-dt/160));
     if (Math.abs(target-progress)<.00001) progress=target;
-    track.style.transform = `${mobile?'scaleX':'scaleY'}(${progress})`;
+    track.style.transform = `${compact?'scaleX':'scaleY'}(${progress})`;
     story.dataset.progress = progress.toFixed(4);
     const leave = ease(progress/.20);
     title.style.transform = `translate3d(0,${-leave*h*.85}px,0)`;
@@ -104,19 +108,32 @@
     intro.style.transform = `translate3d(0,${-leave*h*.6}px,0)`;
     intro.style.opacity = 1-leave;
     expose(intro, progress < .14);
-    task.style.transform = `translate3d(${leave*w*.14}px,${leave*h*.9}px,0) rotate(${-5+leave*22}deg)`;
+    task.style.transform = `translate3d(${compact?'-50%':`${leave*w*.14}px`},${leave*h*.9}px,0) rotate(${compact?0:-5+leave*22}deg)`;
     task.style.opacity = 1-leave;
     expose(task, progress < .14);
     sideNote.style.opacity = 1-leave;
     const travel = ease((progress-.02)/.30);
     const shrink = ease((progress-.32)/.29);
     const cross = ease((progress-.61)/.29);
-    const scale = 1 - travel*.42 - shrink*.20;
+    const dock = ease(progress/.24);
+    const scale = compact ? (1+(shortTablet?.10:.60)*(1-dock))*(1-shrink*.12) : 1 - travel*.42 - shrink*.20;
     const leftPosition = -travel*w*(mobile?.29:.29);
     const rightPosition = w*(mobile?.19:.045);
     const stageX = leftPosition*(1-cross)+rightPosition*cross;
     const stageY = travel*h*(mobile?.19:.23) - Math.sin(cross*Math.PI)*h*.13;
-    stage.style.transform = `translate3d(${stageX}px,${stageY}px,0) scale(${scale})`;
+    // Center the opening pair, dock beside the cards, then change sides while
+    // the outgoing card has left and the incoming card is still below the stage.
+    const compactCross = ease((progress-.67)/.20);
+    const inset = mobile ? -6 : innerWidth*.04;
+    const rightDock = innerWidth-inset-stageWidth/2;
+    const leftDock = inset+stageWidth/2;
+    const openingX = innerWidth*(shortTablet?.75:.5);
+    const compactX = openingX+(rightDock-openingX)*dock+(leftDock-rightDock)*compactCross;
+    const openingY = shortTablet ? h*.64-stageHeight/2 : taskTop-stageHeight+12;
+    const compactY = openingY+(h*.63-stageHeight/2-openingY)*dock;
+    stage.style.transform = compact
+      ? `translate3d(${compactX-stageWidth/2}px,${compactY}px,0) scale(${scale})`
+      : `translate3d(${stageX}px,${stageY}px,0) scale(${scale})`;
     stage.dataset.flip = shrink.toFixed(3);
     stage.dataset.cross = cross.toFixed(3);
     stage.dataset.scale = scale.toFixed(3);
@@ -131,14 +148,26 @@
       let delta = progress-centers[chapter];
       if (chapter===3 && delta>0) delta=0;
       const distance = ease((Math.abs(delta)-.045)/.25)*2;
-      const alpha = 1-ease((Math.abs(delta)-.10)/.085);
+      let alpha = 1-ease((Math.abs(delta)-.10)/.085);
       const direction = chapter===2 ? 1 : -1;
-      const y = Math.sign(delta)*distance*h*1.05*direction;
+      let y = Math.sign(delta)*distance*h*1.05*direction;
+      if (compact && chapter===1 && progress<.32) alpha *= ease((progress-.24)/.08);
+      if (compact && chapter===2 && progress>.61) {
+        const exit = ease((progress-.61)/.08);
+        alpha=1-exit;
+        y=exit*h;
+      }
+      if (compact && chapter===3) {
+        const enter = ease((progress-.78)/.12);
+        alpha=enter;
+        y=(1-enter)*h;
+      }
       const screen = screens[i];
       // The final screen crosses left as its copy crosses right, in step with the mascot.
-      const screenShift = chapter===3 ? (mobile ? -8 : 25-(innerWidth*.90-screenWidths[i]))*cross : 0;
-      const copyShift = chapter===3 && !mobile ? (innerWidth*.54-25)*cross : 0;
-      screen.style.transform = `translate3d(${screenShift}px,${y}px,0) rotate(${(chapter===2?3:-3)+Math.sign(delta)*Math.min(distance,2)*7}deg)`;
+      const screenShift = chapter===3 ? (compact ? innerWidth-screenWidths[i] : (25-(innerWidth*.90-screenWidths[i]))*cross) : 0;
+      const copyShift = chapter===3 && !compact ? (innerWidth*.54-25)*cross : 0;
+      const rotation = compact ? 0 : (chapter===2?3:-3)+Math.sign(delta)*Math.min(distance,2)*7;
+      screen.style.transform = `translate3d(${screenShift}px,${y}px,0) rotate(${rotation}deg)`;
       screen.style.opacity = alpha;
       screen.style.visibility = alpha>.001?'visible':'hidden';
       copy.style.transform = `translate3d(${copyShift}px,${-Math.sign(delta)*distance*h*.16}px,0)`;

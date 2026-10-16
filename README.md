@@ -31,3 +31,5 @@ The App Store status is intentionally not a download button until a real
 listing URL is provided. Privacy links retain the existing production domain.
 
 Current visual direction: warm cream mascot with dark eyes, clean chapter-tinted backgrounds, and larger rounded supporting type. The mascot shrinks through a full scroll-driven flip between chapters 01 and 02. Between 02 and 03 it crosses to the right as the progress screen moves left and its copy moves right. On mobile, copy remains stacked and the horizontal travel is reduced.
+
+On phone and tablet widths up to 1024px, the opening card is centered with a larger mascot tucked slightly behind its top edge. The mascot docks down and right beside chapters 01 and 02, then crosses left while the final card enters on the right. Card exits and entrances are staggered to keep their information clear. Short landscape tablets use a centered side-by-side opening pair. Desktop choreography is unchanged.

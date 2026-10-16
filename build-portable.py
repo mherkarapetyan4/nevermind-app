@@ -56,7 +56,7 @@ def inline_image(match):
     return f'{attribute}="data:{mime};base64,{data}"'
 
 
-html = re.sub(r'(src|href)="((?:screens/|assets/)?[^"/]+\.(?:png|jpg))"', inline_image, html)
+html = re.sub(r'(src|href)="((?:screens/|assets/)?[^"/]+\.(?:png|jpg|ico))"', inline_image, html)
 OUTPUT.mkdir(exist_ok=True)
 (OUTPUT / "nevermind-standalone.html").write_text(html)
 print("Built assets/mascot.bundle.js and output/nevermind-standalone.html")
