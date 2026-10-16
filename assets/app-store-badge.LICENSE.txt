@@ -1,0 +1,4 @@
+Download on the App Store badge
+Source: https://www.svgrepo.com/svg/303128/download-on-the-app-store-apple-logo
+License listed by SVG Repo: CC0
+Change: cropped the SVG viewBox to remove transparent padding.

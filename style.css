@@ -267,3 +267,7 @@ body{font-family:ui-rounded,"SF Pro Rounded",-apple-system,BlinkMacSystemFont,"H
   margin:0 auto 36px;transform:none!important;
  }
 }
+
+/* Keep the supplied App Store artwork at its original badge proportions. */
+.store-status{display:block;width:186px;max-width:100%;margin:27px auto 0;padding:0;background:none;border-radius:0}
+.store-status img{width:100%;height:auto}
