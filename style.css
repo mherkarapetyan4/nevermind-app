@@ -230,3 +230,40 @@ body{font-family:ui-rounded,"SF Pro Rounded",-apple-system,BlinkMacSystemFont,"H
 @media(max-width:1024px){
  .story-copy{top:4%}
 }
+
+/* Give the phone opening a clear reading order above the companion and task. */
+.scroll-hint>span svg{width:18px;height:18px}
+@media(max-width:760px){
+ .story-sticky .hero-inner{padding-top:22px}
+ .story-sticky h1{
+  padding:0;margin:0;background:none;color:var(--ink);border-radius:0;
+  font-family:inherit;font-size:clamp(36px,10.8vw,48px);font-weight:850;
+  line-height:1.04;letter-spacing:-1.8px;text-align:center;
+ }
+ .story-sticky h1>span{display:block}
+ .story-sticky .hero-story{
+  position:relative;top:auto;left:auto;width:100%;max-width:none;
+  margin:16px 0 0;text-align:center;
+ }
+ .story-sticky .hero-description{
+  max-width:32ch;margin:0 auto;line-height:1.5;text-wrap:pretty;
+ }
+ .story-sticky .button{margin-top:14px;min-height:44px;padding:10px 18px}
+ .story-sticky .hero-note{font-size:var(--type-caption);margin-top:9px;line-height:1.4}
+ .story-sticky .floating-task{
+  width:min(100%,340px);bottom:96px;padding:16px 18px;border-radius:22px;
+ }
+ .story-sticky .floating-task p{font-size:20px;line-height:1.25;letter-spacing:-.4px;margin:12px 0;min-height:50px}
+ .story-sticky .key-hint{display:none}
+ .story-sticky .hero-bottom{bottom:8px}
+ .story-sticky .scroll-hint,.story-sticky .motion-toggle{font-size:var(--type-caption)}
+ html:not(.story-ready) .story-sticky .hero-story{margin:16px 0 0}
+ html:not(.story-ready) .story-sticky .mascot-stage{
+  display:block;position:relative;left:auto;right:auto;top:auto;
+  width:172px;height:195px;margin:24px auto -20px;
+ }
+ html:not(.story-ready) .story-sticky .floating-task{
+  display:block;position:relative;left:auto;right:auto;top:auto;bottom:auto;
+  margin:0 auto 36px;transform:none!important;
+ }
+}

@@ -119,7 +119,7 @@
     const shrink = ease((progress-.32)/.29);
     const cross = ease((progress-.61)/.29);
     const dock = ease(progress/.24);
-    const scale = compact ? (1+(shortTablet?.10:.60)*(1-dock))*(1-shrink*.12) : 1 - travel*.42 - shrink*.20;
+    const scale = compact ? (1+(shortTablet?.10:mobile?.32:.60)*(1-dock))*(1-shrink*.12) : 1 - travel*.42 - shrink*.20;
     const leftPosition = -travel*w*(mobile?.29:.29);
     const rightPosition = w*(mobile?.19:.045);
     const stageX = leftPosition*(1-cross)+rightPosition*cross;
@@ -132,7 +132,7 @@
     const leftDock = inset+stageWidth/2;
     const openingX = innerWidth*(shortTablet?.75:.5);
     const compactX = openingX+(rightDock-openingX)*dock+(leftDock-rightDock)*compactCross;
-    const openingY = shortTablet ? h*.64-stageHeight/2 : taskTop-stageHeight+12;
+    const openingY = shortTablet ? h*.64-stageHeight/2 : taskTop-stageHeight+(mobile?42:12);
     const compactY = openingY+(h*.63-stageHeight/2-openingY)*dock;
     stage.style.transform = compact
       ? `translate3d(${compactX-stageWidth/2}px,${compactY}px,0) scale(${scale})`
