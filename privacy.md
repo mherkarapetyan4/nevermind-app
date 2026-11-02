@@ -7,11 +7,13 @@ permalink: /privacy/
 
 Nevermind — Privacy Policy & Support
 
-Last updated: October 15, 2026
+Last updated: November 2, 2026
 
 Privacy
 
 Nevermind does not collect, store, or share any personal data. There are no accounts, no analytics, no ads, and no tracking.
+
+### iPhone
 
 Your data stays on your device. Tasks, notes, history, and settings are stored only on your iPhone. The app's widget and Live Activity read the same on-device data to show your current task.
 
@@ -22,6 +24,12 @@ Notifications. Reminders are scheduled locally on your device. No push servers a
 Export and import. If you export your data, the file is saved wherever you choose (for example, Files or iCloud Drive). We never receive it.
 
 Crash reports. If you have chosen in iOS settings to share analytics with app developers, Apple may provide anonymous crash reports to us. This is controlled by you in Settings → Privacy & Security → Analytics & Improvements.
+
+### Android
+
+On Android, Nevermind works the same way: everything stays on your device. The app has no internet access, so it cannot send your data anywhere. Tasks, notes, history, and settings are stored only on your phone, and are excluded from Android cloud backup. Widgets and the ongoing notification read the same on-device data. Reminders are scheduled locally; the app asks for notification permission to show them and restores them after your phone restarts. Voice dictation is not available on Android. If you export your data, the file is saved wherever you choose using the Android file picker. If you have turned on sharing usage & diagnostics with Google, Google Play may provide us anonymous crash reports.
+
+### All devices
 
 Deleting your data. Deleting the app removes all of its data from your device.
 
