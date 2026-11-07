@@ -85,6 +85,7 @@
       const crop = screen.querySelector('.story-crop');
       screen.style.top = '';
       crop.style.height = '';
+      crop.firstElementChild.style.transform = '';
       if (!compact) return;
       const copy = copies[i];
       const top = copy.offsetTop + copy.offsetHeight + (h > 900 ? 36 : 18);
@@ -92,6 +93,8 @@
       screen.style.top = `${top}px`;
       // Fill the remaining height, up to a crop that still reads as the app's top section.
       crop.style.height = `${Math.max(110, Math.min(crop.offsetWidth*cropLimits[i], h - top - chrome - stage.offsetHeight*.42))}px`;
+      // A short focus crop starts lower in the screenshot so the whole task card stays in view.
+      if (i === 1 && crop.offsetHeight < crop.offsetWidth*.8) crop.firstElementChild.style.transform = 'translateY(-20%)';
     });
   }
   function measure() {
@@ -244,3 +247,10 @@
   shortScreen.addEventListener('change',mode);
   mode();
 })();
+
+// ?record loads the scripted Instagram-story take (see record.js); regular visits never fetch it.
+if (new URLSearchParams(location.search).has('record')) {
+  const script = document.createElement('script');
+  script.src = 'record.js?v=1';
+  document.head.append(script);
+}

@@ -7,11 +7,11 @@ permalink: /privacy/
 
 Nevermind — Privacy Policy & Support
 
-Last updated: November 2, 2026
+Last updated: November 7, 2026
 
 Privacy
 
-Nevermind does not collect, store, or share any personal data. There are no accounts, no analytics, no ads, and no tracking.
+Nevermind does not collect, store, or share any personal data. The app has no accounts, no analytics, no ads, and no tracking.
 
 ### iPhone
 
@@ -28,6 +28,10 @@ Crash reports. If you have chosen in iOS settings to share analytics with app de
 ### Android
 
 On Android, Nevermind works the same way: everything stays on your device. The app has no internet access, so it cannot send your data anywhere. Tasks, notes, history, and settings are stored only on your phone, and are excluded from Android cloud backup. Widgets and the ongoing notification read the same on-device data. Reminders are scheduled locally; the app asks for notification permission to show them and restores them after your phone restarts. Voice dictation is not available on Android. If you export your data, the file is saved wherever you choose using the Android file picker. If you have turned on sharing usage & diagnostics with Google, Google Play may provide us anonymous crash reports.
+
+### This website
+
+The app itself has no analytics. This website (getnevermind.app) uses Cloudflare Web Analytics to count visits. It does not use cookies or fingerprinting and does not track you across sites. It records only basic, anonymous information, such as which page was viewed, the referring site, the browser and device type, and the country the visit came from. We use these numbers only to understand how many people visit and where they come from.
 
 ### All devices
 

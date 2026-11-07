@@ -1,0 +1,5 @@
+Get it on Google Play badge
+Source: https://play.google.com/intl/en_us/badges/ (en_badge_web_generic.png)
+Use follows Google Play badge guidelines: https://partnermarketinghub.withgoogle.com/brands/google-play/visual-identity/badge-guidelines/
+Change: cropped transparent padding.
+Google Play and the Google Play logo are trademarks of Google LLC.

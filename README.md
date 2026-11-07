@@ -27,8 +27,8 @@ Reduced-motion preferences switch to a readable, unpinned sequence. The floating
 An image fallback remains available if WebGL or asset loading fails.
 The example task interaction is a demo and stores no data.
 
-The App Store status is intentionally not a download button until a real
-listing URL is provided. Privacy links retain the existing production domain.
+The App Store and Google Play badges are intentionally not download buttons until
+real listing URLs are provided. Privacy links retain the existing production domain.
 
 Current visual direction: warm cream mascot with dark eyes, clean chapter-tinted backgrounds, and larger rounded supporting type. The mascot shrinks through a full scroll-driven flip between chapters 01 and 02. Between 02 and 03 it crosses to the right as the progress screen moves left and its copy moves right. On mobile, copy remains stacked and the horizontal travel is reduced.
 
